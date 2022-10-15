@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TaskBoardApp.Core.Contracts;
 using TaskBoardApp.Core.Data.Common;
-using TaskBoardApp.Core.Data.Models;
 using TaskBoardApp.Core.Models;
 using Task = TaskBoardApp.Core.Data.Models.Task;
 
@@ -11,14 +10,17 @@ namespace TaskBoardApp.Core.Services
     {
         private readonly IRepository repo;
 
-        public TaskService(IRepository _repo)
+        private IBoardService boardService;
+
+        public TaskService(IRepository _repo,
+            IBoardService _boardService)
         {
             repo = _repo;
+            boardService = _boardService;
         }
 
-        public async System.Threading.Tasks.Task Add(TaskFormModel model, string userId)
-        {           
-
+        public async System.Threading.Tasks.Task AddTask(TaskFormModel model, string userId)
+        {   
             Task task = new Task()
             {
                 Title = model.Title,
@@ -32,15 +34,37 @@ namespace TaskBoardApp.Core.Services
             await repo.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<TaskBoardModel>> GetBoards()
+        public async Task<TaskDetailsViewModel> GetTaskDetails(int id)
         {
-            return await repo.AllReadonly<Board>()
-                .Select(b => new TaskBoardModel()
+            return await repo.All<Task>(t => t.Id == id)                 
+                .Select(t => new TaskDetailsViewModel()
                 {
-                    Id = b.Id,
-                    Name = b.Name,
+                    Id = t.Id,
+                    Title = t.Title,
+                    Description = t.Description,
+                    CreatedOn = t.CreatedOn.ToString("dd/MM/yyyy HH:mm"),
+                    Board = t.Board.Name,
+                    Owner = t.Owner.UserName
                 })
-                .ToListAsync();
+                .FirstOrDefaultAsync();                           
+        }
+
+        public async Task<Data.Models.Task> GetTaskToEdit(int id)
+        {
+            return await repo.GetByIdAsync<Task>(id);
+                
+        }
+
+        public async System.Threading.Tasks.Task UpdateTask(int id, string userId, TaskFormModel model)
+        {
+            var taskToUpdate = await repo.GetByIdAsync<Task>(id);
+
+            taskToUpdate.Title = model.Title;
+            taskToUpdate.Description = model.Description;
+            taskToUpdate.BoardId = model.BoardId;
+
+            repo.Update<Task>(taskToUpdate);
+            await repo.SaveChangesAsync();
         }
     }
 }

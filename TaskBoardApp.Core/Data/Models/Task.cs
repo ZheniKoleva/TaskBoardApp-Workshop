@@ -17,7 +17,6 @@ namespace TaskBoardApp.Core.Data.Models
         [MaxLength(DataConstants.Task.MaxTaskDescription)]
         public string Description { get; set; } = null!;
 
-
         public DateTime CreatedOn { get; set; }
 
        

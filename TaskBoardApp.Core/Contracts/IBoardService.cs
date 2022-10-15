@@ -4,6 +4,8 @@ namespace TaskBoardApp.Core.Contracts
 {
     public interface IBoardService
     {
-        public Task<IEnumerable<BoardViewModel>> GetAllBoards();
+        Task<IEnumerable<BoardViewModel>> GetAllBoards();
+
+        Task<IEnumerable<TaskBoardModel>> GetBoardsTypes();
     }
 }

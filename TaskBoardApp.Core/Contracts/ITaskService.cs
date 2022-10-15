@@ -1,18 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Mvc;
 using TaskBoardApp.Core.Models;
 
 
 namespace TaskBoardApp.Core.Contracts
 {
     public interface ITaskService
-    {
-        Task<IEnumerable<TaskBoardModel>> GetBoards();
+    {   
+        Task AddTask(TaskFormModel model, string UserId);
 
-        Task Add(TaskFormModel model, string UserId);
+        Task<TaskDetailsViewModel> GetTaskDetails(int id);
 
+        Task<Data.Models.Task> GetTaskToEdit(int id);
+
+        Task UpdateTask(int id, string userId, TaskFormModel model);
     }
 }
