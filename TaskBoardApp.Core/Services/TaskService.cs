@@ -36,7 +36,7 @@ namespace TaskBoardApp.Core.Services
 
         public async Task<TaskDetailsViewModel> GetTaskDetails(int id)
         {
-            return await repo.All<Task>(t => t.Id == id)                 
+           return await repo.All<Task>(t => t.Id == id)
                 .Select(t => new TaskDetailsViewModel()
                 {
                     Id = t.Id,
@@ -46,7 +46,7 @@ namespace TaskBoardApp.Core.Services
                     Board = t.Board.Name,
                     Owner = t.Owner.UserName
                 })
-                .FirstOrDefaultAsync();                           
+                .FirstOrDefaultAsync(); 
         }
 
         public async Task<Data.Models.Task> GetTaskToEdit(int id)
@@ -95,6 +95,25 @@ namespace TaskBoardApp.Core.Services
             }
 
             return tasksCount;
+        }
+
+        public async Task<TaskViewModel> GetTaskToDelete(int id)
+        {
+            return await repo.All<Task>(t => t.Id == id)
+                .Select(t => new TaskViewModel()
+                {
+                    Title = t.Title,
+                    Description = t.Description,
+                    Owner = t.OwnerId,
+                    Id = id
+                })
+                .FirstOrDefaultAsync();
+        }
+
+        public async System.Threading.Tasks.Task DeleteTask(int id, string userId)
+        {
+            await repo.DeleteAsync<Task>(id);
+            await repo.SaveChangesAsync();
         }
     }
 }

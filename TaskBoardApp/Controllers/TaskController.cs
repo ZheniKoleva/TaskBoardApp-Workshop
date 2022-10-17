@@ -65,10 +65,11 @@ namespace TaskBoardApp.Controllers
         [Authorize]
         public async Task<IActionResult> Edit(int id)
         {
-            var taskToEdit = await taskService.GetTaskToEdit(id);
+            var taskToEdit = await taskService.GetTaskToEdit(id);            
+
             var boards = await boardService.GetBoardsTypes();
 
-            if (taskToEdit == null)
+            if (taskToEdit == null || taskToEdit == null)
             {
                 return BadRequest();
             }
@@ -109,6 +110,48 @@ namespace TaskBoardApp.Controllers
 
         }
 
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> Delete(int id, TaskViewModel model)
+        {
+            var taskToDelete = await taskService.GetTaskToDelete(id);            
 
+            if (taskToDelete == null)
+            {
+                return BadRequest();
+            }
+
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (userId != taskToDelete.Owner)
+            {
+                return Unauthorized();
+            }  
+
+            return View(taskToDelete);
+        }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var taskToDelete = await taskService.GetTaskToDelete(id);
+
+            if (taskToDelete == null)
+            {
+                return BadRequest();
+            }
+
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (userId != taskToDelete.Owner)
+            {
+                return Unauthorized();
+            }
+
+            await taskService.DeleteTask(id, userId);
+
+            return RedirectToAction("All", "Board");
+        }
     }
 }

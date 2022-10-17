@@ -9,9 +9,9 @@ namespace TaskBoardApp.Controllers
 {
     public class HomeController : Controller
     {       
-        private ITaskService taskService;
+        private readonly ITaskService taskService;
 
-        private IBoardService boardService;
+        private readonly IBoardService boardService;
 
         public HomeController(
             ITaskService _taskService,

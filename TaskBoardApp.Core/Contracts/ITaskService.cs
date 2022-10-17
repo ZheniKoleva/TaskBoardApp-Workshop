@@ -19,5 +19,9 @@ namespace TaskBoardApp.Core.Contracts
         int GetAllTasksCount();
 
         Task<IEnumerable<HomeBoardViewModel>> GetBoardsTasks(IEnumerable<string> boardNames);
+
+        Task<TaskViewModel> GetTaskToDelete(int id);
+
+        Task DeleteTask(int id, string userId);
     }
 }

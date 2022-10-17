@@ -10,18 +10,14 @@ namespace TaskBoardApp.Controllers
     {
         private readonly UserManager<User> userManager;
 
-        private readonly SignInManager<User> signInManager;
-
-        //private readonly RoleManager<IdentityRole> roleManager;
+        private readonly SignInManager<User> signInManager;        
 
         public AccountController(
             UserManager<User> _userManager,
-            SignInManager<User> _signInManager
-            /*RoleManager<IdentityRole> _roleManager*/)
+            SignInManager<User> _signInManager)
         {
             userManager = _userManager;
-            signInManager = _signInManager;
-            //roleManager = _roleManager;
+            signInManager = _signInManager;            
         }
 
 
