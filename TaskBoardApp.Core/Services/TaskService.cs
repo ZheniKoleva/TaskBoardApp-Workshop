@@ -66,5 +66,35 @@ namespace TaskBoardApp.Core.Services
             repo.Update<Task>(taskToUpdate);
             await repo.SaveChangesAsync();
         }
+
+        public int GetUserTasksCount(string userId)
+        {
+            return repo.AllReadonly<Task>(t => t.OwnerId == userId)
+                .Count();
+        }
+
+        public int GetAllTasksCount()
+        {
+            return repo.AllReadonly<Task>().Count();
+        }
+
+        public async Task<IEnumerable<HomeBoardViewModel>> GetBoardsTasks(IEnumerable<string> boardNames)
+        {
+            var tasksCount = new List<HomeBoardViewModel>();
+
+            foreach (var boardName in boardNames)
+            {
+                int tasks = repo.AllReadonly<Task>(b => b.Board.Name == boardName)
+                    .Count();
+
+                tasksCount.Add(new HomeBoardViewModel()
+                {
+                    BoardName = boardName,
+                    TasksCount = tasks
+                });
+            }
+
+            return tasksCount;
+        }
     }
 }

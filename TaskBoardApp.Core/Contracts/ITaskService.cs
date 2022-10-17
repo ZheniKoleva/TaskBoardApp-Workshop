@@ -13,5 +13,11 @@ namespace TaskBoardApp.Core.Contracts
         Task<Data.Models.Task> GetTaskToEdit(int id);
 
         Task UpdateTask(int id, string userId, TaskFormModel model);
+
+        int GetUserTasksCount(string userId);
+
+        int GetAllTasksCount();
+
+        Task<IEnumerable<HomeBoardViewModel>> GetBoardsTasks(IEnumerable<string> boardNames);
     }
 }

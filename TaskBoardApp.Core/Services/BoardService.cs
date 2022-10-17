@@ -43,5 +43,14 @@ namespace TaskBoardApp.Core.Services
                })
                .ToListAsync();
         }
+
+
+        public async Task<IEnumerable<string>> GetDistinctBoards()
+        {
+            return await repo.AllReadonly<Board>()
+                .Select(b => b.Name)
+                .Distinct()
+                .ToListAsync();
+        }       
     }
 }

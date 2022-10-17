@@ -7,5 +7,8 @@ namespace TaskBoardApp.Core.Contracts
         Task<IEnumerable<BoardViewModel>> GetAllBoards();
 
         Task<IEnumerable<TaskBoardModel>> GetBoardsTypes();
+
+        Task<IEnumerable<string>> GetDistinctBoards();
+        
     }
 }

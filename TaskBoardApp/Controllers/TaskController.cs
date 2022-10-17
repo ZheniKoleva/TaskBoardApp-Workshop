@@ -97,8 +97,8 @@ namespace TaskBoardApp.Controllers
         public async Task<IActionResult> Edit(int id, TaskFormModel model)
         {
             if (!ModelState.IsValid)
-            {
-                return View(id);
+            {                
+                return View();
             }
 
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
