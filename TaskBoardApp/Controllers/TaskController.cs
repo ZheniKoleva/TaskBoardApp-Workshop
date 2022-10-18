@@ -6,6 +6,7 @@ using TaskBoardApp.Core.Models;
 
 namespace TaskBoardApp.Controllers
 {
+    [Authorize]
     public class TaskController : Controller
     {
         private readonly ITaskService taskService; 
@@ -21,8 +22,7 @@ namespace TaskBoardApp.Controllers
            
         }
 
-        [HttpGet]
-        [Authorize]
+        [HttpGet]        
         public async Task<IActionResult> Create()
         {
             var model = new TaskFormModel()
@@ -33,8 +33,7 @@ namespace TaskBoardApp.Controllers
             return View(model);
         }
 
-        [HttpPost]
-        [Authorize]
+        [HttpPost]        
         public async Task<IActionResult> Create(TaskFormModel model)
         {
             if (!ModelState.IsValid)
@@ -61,8 +60,7 @@ namespace TaskBoardApp.Controllers
             return View(taskToShow);            
         }
 
-        [HttpGet]
-        [Authorize]
+        [HttpGet]        
         public async Task<IActionResult> Edit(int id)
         {
             var taskToEdit = await taskService.GetTaskToEdit(id);            
@@ -93,8 +91,7 @@ namespace TaskBoardApp.Controllers
             return View(model);
         }
 
-        [HttpPost]
-        [Authorize]
+        [HttpPost]        
         public async Task<IActionResult> Edit(int id, TaskFormModel model)
         {
             if (!ModelState.IsValid)
@@ -110,8 +107,7 @@ namespace TaskBoardApp.Controllers
 
         }
 
-        [HttpGet]
-        [Authorize]
+        [HttpGet]        
         public async Task<IActionResult> Delete(int id, TaskViewModel model)
         {
             var taskToDelete = await taskService.GetTaskToDelete(id);            
@@ -131,8 +127,7 @@ namespace TaskBoardApp.Controllers
             return View(taskToDelete);
         }
 
-        [HttpPost]
-        [Authorize]
+        [HttpPost]       
         public async Task<IActionResult> Delete(int id)
         {
             var taskToDelete = await taskService.GetTaskToDelete(id);

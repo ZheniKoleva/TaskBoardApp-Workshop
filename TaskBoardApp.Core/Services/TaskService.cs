@@ -8,15 +8,12 @@ namespace TaskBoardApp.Core.Services
 {
     public class TaskService : ITaskService
     {
-        private readonly IRepository repo;
-
-        private IBoardService boardService;
+        private readonly IRepository repo;       
 
         public TaskService(IRepository _repo,
             IBoardService _boardService)
         {
-            repo = _repo;
-            boardService = _boardService;
+            repo = _repo;           
         }
 
         public async System.Threading.Tasks.Task AddTask(TaskFormModel model, string userId)
